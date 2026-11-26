@@ -1,87 +1,68 @@
 
-## Funkcje agregujące
+### Bazy danych, informatyka, studia stacjonarne, semestr 2026Z
 
-Wykonują obliczenia na wielu rekordach i zwracają jedną wartość dla zbioru całego zbioru danych lub dla każdej grupy danych.
+#### SQL. Funkcje agregujące, grupowanie, łączenie tabel
 
-|Funkcja		|Zastosowanie|
-|---|---|
-|COUNT()|Zlicza wiersze lub niepuste wartości w konkretnej kolumnie|
-|SUM()|Oblicza sumę wartości liczbowych|
-|AVG()|Oblicza średnią arytmetyczną|
-|MIN()|Znajduje najmniejszą wartość|
-|MAX()|Znajduje największą wartość|
+---
 
-### Funkcja COUNT()
-* `COUNT(*)` - liczy wszystkie rekordy.
-	* Przykład: ilu jest klientów.
-* `COUNT(kolumna)` - liczy tylko rekordy, w których wskazana kolumna nie ma wartości NULL.
-	* Przykład: ilu klientów ma podany adres e-mail.
-* `COUNT(DISTINCT)` - liczy unikalne wartości.
-	* Przykład: z ilu różnych miast pochodzą klienci.
+#### Zadanie 1
 
-## Grupowanie
+1. Wyświetl **średnią pensję** wszystkich pracowników.
+2. Wyświetl **średnią pensję** oraz **liczbę pracowników** dla każdego stanowiska (JOB_POSITION_ID).
+3. Wyświetl **średni wiek** dla każdego departamentu (DEPARTMENT_ID), do którego należy pracownik.
 
-`GROUP BY` grupuje wiersze, które mają takie same wartości w określonej kolumnie lub kolumnach. Następnie można zastosować funkcje agregujące do każdej grupy.
+####  Podpowiedź
+**Ad.** Użyj funkcji agregujących (AVG, COUNT).\
+**Ad 2.** Użyj GROUP BY.\
+**Ad 3.** Można wykorzystać funkcję YEAR() do obliczenia wieku na podstawie daty urodzenia.
 
-Dla tabeli `CUSTOMER`: `CUSTOMER_ID`, `NAME`, `CITY`
-```SQL
-SELECT department, COUNT(*)
-FROM employees
-GROUP BY department;
-```
+---
 
-W tej składni porządkuje zestaw wyników w grupy na podstawie wartości w kolumnie department.
+#### Zadanie 2
 
-### Grupowanie a filtrowanie
-`WHERE` i `HAVING` służą do filtrowania danych, ale działają na różnych etapach przetwarzania zapytania.
+1. Dla każdego **departamentu** (DEPARTMENT_ID) wyświetl **łączną pensję** jego pracowników.\
+Dane posortuj **malejąco**.
+2. Dla każdego **stanowiska pracy** pracownika wyświetl **średnią pensję**, jeśli liczba pracowników na danym stanowisku jest **≥ 3** oraz średnia jest **> 3000 PLN**.
+3. Wyświetl, **ile jest różnych pensji** dla każdego departamentu, jeśli minimalna liczba pracowników departamentu jest **> 4**.\
+Dane posortuj **rosnąco** według ilości różnych pensji.
 
-|Cecha|WHERE|HAVING|
-|---|---|---|
-|Co filtruje?|Rekordy|Grupy rekordów|
-|Zastosowanie|Filtrowanie danych przed grupowaniem|Filtrowanie danych po grupowaniu|
-|Funkcje agregujące|Nie można używać|Można używać|
-|Kolejność wykonania|Przed `GROUP BY`|Po `GROUP BY`|
-|Przykład|`WHERE price > 1000`|`HAVING SUM(price) > 1000`|
+#### Podpowiedź:
+**Ad.** We wszystkich zadaniach występuje GROUP BY.
+**Ad 2, 3.** W zadaniach 2–3 przyda się HAVING.
 
-```SQL
-SELECT CITY, COUNT(*) AS LICZBA_KLIENTOW
-FROM CUSTOMER
-WHERE CITY IS NOT NULL	-- pomija klientów, dla których nie podano miasta
-GROUP BY CITY			-- grupuje klientów według miasta
-HAVING COUNT(*) > 5;	-- tylko te miasta, w których jest więcej niż 5 klientów
-```
+---
 
-## Łączenie tabel
+#### Zadanie 3
 
-Klauzula `JOIN` służy do łączenia wierszy z dwóch lub więcej tabel na podstawie powiązanych kolumn.
+1. Skopiuj tabele **DEPARTMENT** i **JOB_POSITION** z bazy **company_2025** do swojej bazy danych.
+2. Wyświetl dla każdej **nazwy departamentu** liczbę jego pracowników.
+3. Wyświetl dla każdej **nazwy departamentu** imiona oraz nazwiska pracowników, którzy w nim pracują (łącznie).
 
-### Rodzaje JOIN
-* **INNER JOIN** - zwraca tylko te wiersze, które mają odpowiadające sobie rekordy w obu tabelach.
-* **LEFT JOIN** - zwraca wszystkie wiersze z lewej tabeli oraz dopasowane wiersze z prawej tabeli.
-* **RIGHT JOIN** - zwraca wszystkie wiersze z prawej tabeli oraz dopasowane wiersze z lewej tabeli.
-* **CROSS JOIN** - zwraca iloczyn kartezjański tabel. Każdy wiersz tabeli1 jest łączony z każdym wierszem tabeli2.
-* **SELF JOIN** - polega na połączeniu tabeli z samą sobą. Wykorzystuje się aliasy, żeby odróżnić dwa wystąpienia tej samej tabeli.
-* **NATURAL JOIN** - łączy tabele automatycznie na podstawie kolumn o identycznych nazwach. Nie wymagania podawania warunku `ON`.
+#### Podpowiedź:
+**Ad 1.** Do kopiowania tabel użyj CREATE TABLE ... AS SELECT ....
+**Ad 2, 3.** Połącz tabele DEPARTMENT i EMPLOYEE (JOIN).
 
-Dla tabeli:
-* `CUSTOMER`: `CUSTOMER_ID`, `NAME`, `CITY`.
-* `ORDERS`: `ORDER_ID`, `CUSTOMER_ID`, `TOTAL_PRICE`.
+---
 
-```SQL
--- Wszyscy klienci, również ci bez zamówień
-SELECT CUSTOMER.NAME, ORDERS.ORDER_ID
-FROM CUSTOMER
-LEFT JOIN ORDERS
-ON CUSTOMER.CUSTOMER_ID = ORDERS.CUSTOMER_ID;
-```
+#### Zadanie 4
 
-## Kolejność składni zapytania
+1. Wyświetl **nazwiska pracowników**, którzy urodzili się w **latach 90-tych XX wieku**, oraz **nazwy stanowisk**, na których są zatrudnieni (użyj NATURAL JOIN, jeśli to możliwe).
 
-1. SELECT
-2. FROM
-3. JOIN
-4. WHERE
-5. GROUP BY
-6. HAVING
-7. ORDER BY
-8. LIMIT
+2. Wyświetl **imiona i nazwiska 5 najmłodszych pracowników**, którzy pracują jako
+**„Magazynier”**.
+
+3. Wypisz obok siebie **skrócone nazwy klientów**, których numer CLIENT_ID różni się o **5** (np. Kowalski - AutoMax, Nowak - Kaczmarek).
+
+#### Podpowiedź:
+**Ad 3.** Użyj połączenia tabeli samej ze sobą (SELF JOIN).
+
+---
+
+#### Zadanie 5
+
+1. Dla każdego **stanowiska pracy** wyświetl **średnie zarobki pracowników**,
+jeśli pracownik **nie pracuje w departamencie „IT” ani „HR”** i liczba pracowników jest **powyżej 3**.
+2. Dla każdego **stanowiska pracownika** wyświetl:
+	* imię, nazwisko,
+	* datę urodzenia **najmłodszej i najstarszej** osoby,
+	* **departament**, w którym pracują.
