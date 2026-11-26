@@ -13,7 +13,7 @@
 4. Wypisz **ORDER_ID**, **ORDER_STATUS** dla klientów o **identyfikatorach 1, 3, 5**.
 
 ####  Podpowiedź
-Ad 1. Użyj polecenia `CREATE TABLE ... AS SELECT ...` do skopiowania tabel.
+Ad 1. Użyj polecenia `CREATE TABLE ... AS SELECT ...` do skopiowania tabel.\
 Ad 4. Wykorzystaj operator `IN`.
 
 ---
@@ -58,5 +58,5 @@ Ad 1. Możesz wykorzystać funkcję `MONTH()`.
 
 2. Wyświetl `klientów`, którzy **nie mają** podanego numeru **NIP**.
 
-3. Wyświetl **skrócone nazwy** `klientów`, których nazwa zaczyna się od **'K'** lub kończy się na **'ski'**. 
+3. Wyświetl **skrócone nazwy** `klientów`, których nazwa zaczyna się od **'K'** lub kończy się na **'ski'**. \
 Dane posortuj malejąco (od Z do A) według **skróconej nazwy**.
